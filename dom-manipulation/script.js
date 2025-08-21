@@ -36,17 +36,38 @@ function createAddQuoteForm() {
   // Find the container where we want to put the form
   let container = document.getElementById("form-container");
 
-  // Create the form HTML dynamically
-  container.innerHTML = `
-    <div class="form-section">
-      <h3>Add Your Own Quote</h3>
-      <div>
-        <input id="newQuoteText" type="text" placeholder="Enter a new quote">
-        <input id="newQuoteCategory" type="text" placeholder="Enter quote category">
-        <button onclick="addQuote()">Add Quote</button>
-      </div>
-    </div>
-  `;
+  // Create elements using createElement
+  let formSection = document.createElement("div");
+  formSection.className = "form-section";
+
+  let heading = document.createElement("h3");
+  heading.textContent = "Add Your Own Quote";
+
+  let inputContainer = document.createElement("div");
+
+  let textInput = document.createElement("input");
+  textInput.id = "newQuoteText";
+  textInput.type = "text";
+  textInput.placeholder = "Enter a new quote";
+
+  let categoryInput = document.createElement("input");
+  categoryInput.id = "newQuoteCategory";
+  categoryInput.type = "text";
+  categoryInput.placeholder = "Enter quote category";
+
+  let addButton = document.createElement("button");
+  addButton.textContent = "Add Quote";
+  addButton.onclick = addQuote;
+
+  // Append elements to build the structure
+  inputContainer.appendChild(textInput);
+  inputContainer.appendChild(categoryInput);
+  inputContainer.appendChild(addButton);
+
+  formSection.appendChild(heading);
+  formSection.appendChild(inputContainer);
+
+  container.appendChild(formSection);
 }
 
 // Function to show a random quote
