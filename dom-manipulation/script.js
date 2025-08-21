@@ -10,7 +10,7 @@ let quotes = [
     category: "Resilience",
   },
   {
-    text: "The only way to do great work is to love whta you do.",
+    text: "The only way to do great work is to love what you do.",
     category: "Work",
   },
   {
@@ -33,6 +33,7 @@ let quotes = [
 
 // Function to create the add quote form
 function createAddQuoteForm() {
+  if (document.querySelector(".form-section")) return; // don't create again
   // Find the container where we want to put the form
   let container = document.getElementById("form-container");
 
@@ -70,6 +71,23 @@ function createAddQuoteForm() {
   container.appendChild(formSection);
 }
 
+// --- Session Storage Helpers ---
+function saveLastQuoteToSession(quote) {
+  sessionStorage.setItem("lastQuote", JSON.stringify(quote));
+}
+
+function loadLastQuoteToSession() {
+  let lastQuote = sessionStorage.getItem("lastQuote");
+  if (lastQuote) {
+    let parsed = JSON.parse(lastQuote);
+    let quoteBox = document.getElementById("quoteDisplay");
+    quoteBox.innerHTML = `
+      <div class='quote-text'>"${parsed.text}"</div>
+      <div class='quote-category'>Category: ${parsed.category}</div>
+    `;
+  }
+}
+
 // Function to show a random quote
 function showRandomQuote() {
   // Pick a random number between 0 and the number of quotes we have
@@ -84,6 +102,21 @@ function showRandomQuote() {
         <div class="quote-text">"${selectedQuote.text}"</div>
         <div class="quote-category">Category: ${selectedQuote.category}</div>
     `;
+
+  // Save last shown quote in session storage
+  saveLastQuoteToSession(selectedQuote);
+}
+
+// --- Local Storage Helpers ---
+function saveQuotesToLocal() {
+  localStorage.setItem("quotes", JSON.stringify(quotes));
+}
+
+function loadQuotesFromLocal() {
+  let storedQuotes = localStorage.getItem("quotes");
+  if (storedQuotes) {
+    quotes = JSON.parse(storedQuotes);
+  }
 }
 
 // Function to add a new quote
@@ -104,6 +137,9 @@ function addQuote() {
     category: newCategory,
   });
 
+  //Save updated list to localStorage
+  saveQuotesToLocal();
+
   //   Clear the text boxes
   document.getElementById("newQuoteText").value = "";
   document.getElementById("newQuoteCategory").value = "";
@@ -120,6 +156,10 @@ document.getElementById("newQuote").addEventListener("click", showRandomQuote);
 document
   .getElementById("showFormButton")
   .addEventListener("click", createAddQuoteForm);
+
+//Load quotes from localStorage if available
+loadQuotesFromLocal();
+loadLastQuoteToSession(); // get the last quote seen
 
 // Show a quote when the page first loads
 showRandomQuote();
