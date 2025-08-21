@@ -31,6 +31,24 @@ let quotes = [
   },
 ];
 
+// Function to create the add quote form
+function createAddQuoteForm() {
+  // Find the container where we want to put the form
+  let container = document.getElementById("form-container");
+
+  // Create the form HTML dynamically
+  container.innerHTML = `
+    <div class="form-section">
+      <h3>Add Your Own Quote</h3>
+      <div>
+        <input id="newQuoteText" type="text" placeholder="Enter a new quote">
+        <input id="newQuoteCategory" type="text" placeholder="Enter quote category">
+        <button onclick="addQuote()">Add Quote</button>
+      </div>
+    </div>
+  `;
+}
+
 // Function to show a random quote
 function showRandomQuote() {
   // Pick a random number between 0 and the number of quotes we have
@@ -76,8 +94,11 @@ function addQuote() {
   showRandomQuote();
 }
 
-// Make the "Show New Quote" button work
+// Make the buttons work
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+document
+  .getElementById("showFormButton")
+  .addEventListener("click", createAddQuoteForm);
 
 // Show a quote when the page first loads
 showRandomQuote();
