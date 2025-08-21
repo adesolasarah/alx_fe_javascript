@@ -15,7 +15,18 @@
 
     <!-- Container where the form will be created -->
     <div id="form-container"></div>
-
     <button id="showFormButton">Show Add Quote Form</button>
+
+    <hr />
+    <!-- Export button -->
+    <button id="exportBtn">Export Quotes (JSON)</button>
+
+    <!-- Import file input -->
+    <input
+      type="file"
+      id="importFile"
+      accept=".json"
+      onchange="importFromJsonFile(event)"
+    />
   </body>
 </html>
