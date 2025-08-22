@@ -107,6 +107,48 @@ function showRandomQuote() {
   saveLastQuoteToSession(selectedQuote);
 }
 
+//Export Quotes to JSON
+function exportToJsonFile() {
+  //Convert the quotes array to a JSON string
+  const dataStr = JSON.stringify(quotes, null, 2); //pretty format
+  const blob = new Blob([dataStr], { type: "application/json" });
+
+  //Create a temporary link to download the file
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "quotes.json"; //file name
+  link.click();
+
+  //Free up memory
+  URL.revokeObjectURL(url);
+}
+
+//Import Quotes from JSON
+function importFromJsonFile() {
+  const fileReader = new FileReader();
+
+  //When file is loaded
+  fileReader.onload = function (event) {
+    try {
+      //Parse JSON text into array
+      const importedQuotes = JSON.parse(event.target.result);
+
+      //Add the imported quotes into our main array
+      quotes.push(...importedQuotes);
+
+      //Save updated list to localStorage
+      saveQuotesToLocal();
+
+      alert("Quotes imported successfully!");
+    } catch (error) {
+      alert("Invalid JSON file. Please check your file.");
+    }
+  };
+  //Read the uploaded file as plain text
+  fileReader.readAsText(event.target.files[0]);
+}
+
 // --- Local Storage Helpers ---
 function saveQuotesToLocal() {
   localStorage.setItem("quotes", JSON.stringify(quotes));
